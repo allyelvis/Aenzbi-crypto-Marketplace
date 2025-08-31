@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SearchIcon, WalletIcon, MenuIcon, XIcon, CartIcon } from './icons';
+import { SearchIcon, WalletIcon, MenuIcon, XIcon, CartIcon, ChevronDownIcon } from './icons';
 
 const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
   <a href={href} className="text-gray-300 hover:text-white transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">
@@ -12,10 +12,56 @@ interface HeaderProps {
   onSearchChange: (query: string) => void;
   cartItemCount: number;
   onCartClick: () => void;
+  walletAddress: string | null;
+  onConnectClick: () => void;
+  onDisconnectClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange, cartItemCount, onCartClick }) => {
+const Header: React.FC<HeaderProps> = ({ 
+  searchQuery, 
+  onSearchChange, 
+  cartItemCount, 
+  onCartClick,
+  walletAddress,
+  onConnectClick,
+  onDisconnectClick
+}) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const shortenAddress = (address: string) => {
+    return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
+  }
+
+  const WalletButton: React.FC<{ isMobile?: boolean }> = ({ isMobile = false }) => {
+    if (walletAddress) {
+      return (
+        <div className="relative group">
+          <button className={`flex items-center bg-dark-card border border-gray-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 shadow-md ${isMobile ? 'w-full justify-center' : ''}`}>
+            <WalletIcon className="h-5 w-5 mr-2 text-brand-primary" />
+            {shortenAddress(walletAddress)}
+            <ChevronDownIcon className="h-4 w-4 ml-2 group-hover:rotate-180 transition-transform"/>
+          </button>
+          <div className="absolute top-full right-0 mt-2 w-48 bg-dark-secondary rounded-md shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
+            <button 
+              onClick={onDisconnectClick}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-dark-card hover:text-brand-accent"
+            >
+              Disconnect
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return (
+       <button 
+        onClick={onConnectClick}
+        className={`flex items-center bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-semibold py-2 px-4 rounded-full hover:scale-105 transform transition-transform duration-300 shadow-md ${isMobile ? 'w-full justify-center' : ''}`}
+      >
+        <WalletIcon className="h-5 w-5 mr-2" />
+        Connect Wallet
+      </button>
+    );
+  }
 
   return (
     <header className="bg-dark-secondary/80 backdrop-blur-sm sticky top-0 z-50 shadow-lg shadow-black/20">
@@ -53,10 +99,7 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange, cartItemCo
                 </span>
               )}
             </button>
-            <button className="flex items-center bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-semibold py-2 px-4 rounded-full hover:scale-105 transform transition-transform duration-300 shadow-md">
-              <WalletIcon className="h-5 w-5 mr-2" />
-              Connect Wallet
-            </button>
+            <WalletButton />
           </div>
           <div className="md:hidden flex items-center">
              <button onClick={onCartClick} className="relative text-gray-300 hover:text-white p-2 mr-2">
@@ -80,10 +123,7 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange, cartItemCo
           <NavLink href="#">Crypto</NavLink>
           <NavLink href="#">POS</NavLink>
            <div className="pt-4 pb-2">
-            <button className="w-full flex items-center justify-center bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-semibold py-2 px-4 rounded-full hover:scale-105 transform transition-transform duration-300 shadow-md">
-              <WalletIcon className="h-5 w-5 mr-2" />
-              Connect Wallet
-            </button>
+            <WalletButton isMobile />
           </div>
         </div>
       )}

@@ -92,3 +92,27 @@ export const CopyIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75h.008v.008H12v-.008z" />
   </svg>
 );
+
+export const ChevronDownIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+  </svg>
+);
+
+export const MetaMaskIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <path d="M435.051 256.002L278.384 412.668L256.002 435.05L233.619 412.668L76.953 256.002L256.002 76.951L435.051 256.002Z" fill="#E2761B"/>
+    <path d="M256.002 76.951V256.002L76.953 256.002L256.002 76.951Z" fill="#E4761B" stroke="#E4761B" strokeWidth="0.5"/>
+    <path d="M256.002 76.951L435.051 256.002L256.002 256.002V76.951Z" fill="#E4761B" stroke="#E4761B" strokeWidth="0.5"/>
+    <path d="M256.002 338.83L435.051 256.002L256.002 256.002V338.83Z" fill="#E4761B" stroke="#E4761B" strokeWidth="0.5"/>
+    <path d="M256.002 338.83V256.002L76.953 256.002L256.002 338.83Z" fill="#E4761B" stroke="#E4761B" strokeWidth="0.5"/>
+    <path d="M165.938 274.52L256.002 435.051L278.384 412.668L225.803 313.486L165.938 274.52Z" fill="#D7C1B3"/>
+    <path d="M278.384 412.668L346.065 274.52L225.803 313.486L278.384 412.668Z" fill="#D7C1B3"/>
+    <path d="M346.065 274.52L256.002 243.62L225.803 313.486L346.065 274.52Z" fill="#233447"/>
+    <path d="M165.938 274.52L225.803 313.486L256.002 243.62L165.938 274.52Z" fill="#233447"/>
+    <path d="M278.384 412.668L256.002 338.831V435.051L278.384 412.668Z" fill="#F6851B"/>
+    <path d="M233.619 412.668L256.002 435.051V338.831L233.619 412.668Z" fill="#F6851B"/>
+    <path d="M225.803 313.486L256.002 338.831V243.62L225.803 313.486Z" fill="#C0AD9E"/>
+    <path d="M256.002 243.62V338.831L346.065 274.52L256.002 243.62Z" fill="#161616"/>
+  </svg>
+);

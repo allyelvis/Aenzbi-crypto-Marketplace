@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import type { CartItem } from '../types';
-import { XIcon, TrashIcon, EthIcon, CopyIcon } from './icons';
+import { XIcon, TrashIcon, EthIcon, CopyIcon, CartIcon } from './icons';
 
 interface CartModalProps {
   isOpen: boolean;
@@ -23,7 +23,10 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cartItems, onUpd
 
   useEffect(() => {
     if (isOpen) {
-      setStep('cart');
+      // Reset to cart view whenever modal is opened, unless there are no items, then stay on success.
+      if (cartItems.length > 0 || step !== 'success') {
+          setStep('cart');
+      }
     }
   }, [isOpen]);
 
@@ -42,8 +45,12 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cartItems, onUpd
     setStep('pending');
     setTimeout(() => {
         setStep('success');
-        onClearCart();
     }, 3000);
+  }
+  
+  const handleFinish = () => {
+    onClearCart();
+    onClose();
   }
 
   const renderContent = () => {
@@ -52,7 +59,17 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cartItems, onUpd
         return (
           <>
             <div className="flex justify-between items-center p-6 border-b border-gray-700">
-              <h2 className="text-2xl font-bold text-white">Your Cart</h2>
+              <div className="flex items-center gap-4">
+                 <h2 className="text-2xl font-bold text-white">Your Cart</h2>
+                 {cartItems.length > 0 && (
+                    <button 
+                        onClick={onClearCart} 
+                        className="text-sm text-gray-400 hover:text-brand-accent transition-colors"
+                    >
+                        Clear All
+                    </button>
+                 )}
+              </div>
               <button onClick={onClose} className="text-gray-400 hover:text-white"><XIcon className="h-6 w-6" /></button>
             </div>
             {cartItems.length > 0 ? (
@@ -88,9 +105,16 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cartItems, onUpd
                 </div>
               </>
             ) : (
-              <div className="p-16 text-center text-gray-400">
-                  <p className="text-lg mb-2">Your cart is empty.</p>
-                  <p>Explore the marketplace to find something you'll love!</p>
+              <div className="p-16 text-center text-gray-400 flex flex-col items-center justify-center min-h-[300px]">
+                  <CartIcon className="w-16 h-16 mb-4 text-gray-600" />
+                  <p className="text-lg font-semibold text-white mb-2">Your cart is empty.</p>
+                  <p className="max-w-xs mb-6">Looks like you haven't added anything yet. Let's find something for you!</p>
+                  <button 
+                      onClick={onClose} 
+                      className="bg-brand-primary text-white font-semibold py-2 px-6 rounded-lg hover:bg-brand-primary/90 transition-colors"
+                  >
+                      Continue Shopping
+                  </button>
               </div>
             )}
           </>
@@ -133,7 +157,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cartItems, onUpd
         );
         case 'pending':
             return (
-                <div className="p-12 flex flex-col items-center justify-center text-center h-96">
+                <div className="p-12 flex flex-col items-center justify-center text-center min-h-[400px]">
                     <div className="w-16 h-16 border-4 border-brand-primary border-t-transparent rounded-full animate-spin mb-6"></div>
                     <h3 className="text-2xl font-bold text-white mb-2">Confirming Transaction</h3>
                     <p className="text-gray-400">Please wait while we confirm your payment on the blockchain. This may take a moment.</p>
@@ -141,7 +165,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cartItems, onUpd
             );
         case 'success':
             return (
-                 <div className="p-12 flex flex-col items-center justify-center text-center h-96">
+                 <div className="p-12 flex flex-col items-center justify-center text-center min-h-[400px]">
                     <div className="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
                         <svg className="w-12 h-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -149,8 +173,8 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose, cartItems, onUpd
                     </div>
                     <h3 className="text-3xl font-bold text-white mb-2">Payment Confirmed!</h3>
                     <p className="text-gray-300 max-w-sm mb-8">Your order has been successfully processed. Thank you for shopping with aenzbi!</p>
-                    <button onClick={onClose} className="w-full max-w-xs bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-semibold py-3 px-4 rounded-lg hover:scale-105 transform transition-transform duration-300 shadow-md">
-                        Start a New Order
+                    <button onClick={handleFinish} className="w-full max-w-xs bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-semibold py-3 px-4 rounded-lg hover:scale-105 transform transition-transform duration-300 shadow-md">
+                        Finish
                     </button>
                 </div>
             )

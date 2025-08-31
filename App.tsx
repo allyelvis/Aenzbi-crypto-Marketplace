@@ -5,12 +5,15 @@ import Pillars from './components/Pillars';
 import FeaturedProducts from './components/FeaturedProducts';
 import Footer from './components/Footer';
 import CartModal from './components/CartModal';
+import ConnectWalletModal from './components/ConnectWalletModal';
 import type { Product, CartItem } from './types';
 
 const App: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
@@ -44,6 +47,15 @@ const App: React.FC = () => {
     setCart([]);
   }, []);
 
+  const handleConnectWallet = (address: string) => {
+    setWalletAddress(address);
+    setIsWalletModalOpen(false);
+  };
+
+  const handleDisconnectWallet = () => {
+    setWalletAddress(null);
+  };
+
 
   return (
     <div className="min-h-screen bg-dark-main text-gray-100 font-sans">
@@ -52,6 +64,9 @@ const App: React.FC = () => {
         onSearchChange={handleSearchChange}
         cartItemCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
         onCartClick={() => setIsCartOpen(true)}
+        walletAddress={walletAddress}
+        onConnectClick={() => setIsWalletModalOpen(true)}
+        onDisconnectClick={handleDisconnectWallet}
       />
       <main>
         <Hero />
@@ -68,6 +83,11 @@ const App: React.FC = () => {
         cartItems={cart}
         onUpdateQuantity={handleUpdateQuantity}
         onClearCart={handleClearCart}
+      />
+      <ConnectWalletModal
+        isOpen={isWalletModalOpen}
+        onClose={() => setIsWalletModalOpen(false)}
+        onConnect={handleConnectWallet}
       />
     </div>
   );
