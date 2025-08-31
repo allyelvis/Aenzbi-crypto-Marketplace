@@ -1,5 +1,11 @@
 import type React from 'react';
 
+declare global {
+  interface Window {
+    ethereum?: any;
+  }
+}
+
 export interface Product {
   id: number;
   name: string;

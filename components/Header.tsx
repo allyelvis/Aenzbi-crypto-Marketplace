@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SearchIcon, WalletIcon, MenuIcon, XIcon, CartIcon, ChevronDownIcon } from './icons';
+import { SearchIcon, WalletIcon, MenuIcon, XIcon, CartIcon, ChevronDownIcon, EthIcon } from './icons';
 
 const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
   <a href={href} className="text-gray-300 hover:text-white transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">
@@ -13,6 +13,7 @@ interface HeaderProps {
   cartItemCount: number;
   onCartClick: () => void;
   walletAddress: string | null;
+  walletBalance: string | null;
   onConnectClick: () => void;
   onDisconnectClick: () => void;
 }
@@ -23,6 +24,7 @@ const Header: React.FC<HeaderProps> = ({
   cartItemCount, 
   onCartClick,
   walletAddress,
+  walletBalance,
   onConnectClick,
   onDisconnectClick
 }) => {
@@ -37,8 +39,14 @@ const Header: React.FC<HeaderProps> = ({
       return (
         <div className="relative group">
           <button className={`flex items-center bg-dark-card border border-gray-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300 shadow-md ${isMobile ? 'w-full justify-center' : ''}`}>
-            <WalletIcon className="h-5 w-5 mr-2 text-brand-primary" />
-            {shortenAddress(walletAddress)}
+            <EthIcon className="h-5 w-5 mr-2 text-gray-300" />
+            {walletBalance !== null ? (
+                <span className="font-mono text-sm">{walletBalance} ETH</span>
+            ) : (
+                <span className="h-4 w-4 bg-gray-700 rounded-full animate-pulse"></span>
+            )}
+            <span className="h-4 w-px bg-gray-600 mx-3"></span>
+            <span className="font-mono text-sm">{shortenAddress(walletAddress)}</span>
             <ChevronDownIcon className="h-4 w-4 ml-2 group-hover:rotate-180 transition-transform"/>
           </button>
           <div className="absolute top-full right-0 mt-2 w-48 bg-dark-secondary rounded-md shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">

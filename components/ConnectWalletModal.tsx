@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { XIcon, MetaMaskIcon } from './icons';
 
 interface ConnectWalletModalProps {
@@ -9,19 +9,35 @@ interface ConnectWalletModalProps {
 
 const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({ isOpen, onClose, onConnect }) => {
   const [isConnecting, setIsConnecting] = useState(false);
+  const [hasProvider, setHasProvider] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (typeof window.ethereum !== 'undefined') {
+      setHasProvider(true);
+    } else {
+      setHasProvider(false);
+    }
+  }, []);
 
   if (!isOpen) {
     return null;
   }
 
-  const handleConnect = () => {
+  const handleConnect = async () => {
+    if (!hasProvider) return;
     setIsConnecting(true);
-    // Simulate wallet connection
-    setTimeout(() => {
-      const simulatedAddress = "0x1a2B3c4D5e6F7g8H9i0J1k2L3m4N5o6P7q8R9s0T";
-      onConnect(simulatedAddress);
+    try {
+      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (accounts && accounts.length > 0) {
+        onConnect(accounts[0]);
+      } else {
+         console.warn("No accounts found.");
+      }
+    } catch (error) {
+      console.error("Wallet connection failed:", error);
+    } finally {
       setIsConnecting(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -37,7 +53,7 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({ isOpen, onClose
             </p>
             <button 
                 onClick={handleConnect}
-                disabled={isConnecting}
+                disabled={isConnecting || !hasProvider}
                 className="w-full flex items-center justify-center gap-4 bg-dark-secondary p-4 rounded-lg hover:bg-gray-700/80 transition-colors duration-300 border border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {isConnecting ? (
@@ -52,6 +68,11 @@ const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({ isOpen, onClose
                     </>
                 )}
             </button>
+            {!hasProvider && (
+              <p className="text-center text-sm text-brand-accent mt-4">
+                MetaMask not detected. Please install the browser extension to connect.
+              </p>
+            )}
         </div>
       </div>
     </div>

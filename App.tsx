@@ -13,6 +13,7 @@ const App: React.FC = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [walletBalance, setWalletBalance] = useState<string | null>(null);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
 
   const handleSearchChange = (query: string) => {
@@ -47,13 +48,27 @@ const App: React.FC = () => {
     setCart([]);
   }, []);
 
-  const handleConnectWallet = (address: string) => {
+  const handleConnectWallet = async (address: string) => {
     setWalletAddress(address);
     setIsWalletModalOpen(false);
+    if (window.ethereum) {
+      try {
+        const balanceInWei = await window.ethereum.request({
+          method: 'eth_getBalance',
+          params: [address, 'latest'],
+        });
+        const balanceInEth = (parseInt(balanceInWei, 16) / 1e18).toFixed(4);
+        setWalletBalance(balanceInEth);
+      } catch (error) {
+        console.error("Failed to fetch balance:", error);
+        setWalletBalance(null);
+      }
+    }
   };
 
   const handleDisconnectWallet = () => {
     setWalletAddress(null);
+    setWalletBalance(null);
   };
 
 
@@ -65,6 +80,7 @@ const App: React.FC = () => {
         cartItemCount={cart.reduce((sum, item) => sum + item.quantity, 0)}
         onCartClick={() => setIsCartOpen(true)}
         walletAddress={walletAddress}
+        walletBalance={walletBalance}
         onConnectClick={() => setIsWalletModalOpen(true)}
         onDisconnectClick={handleDisconnectWallet}
       />
