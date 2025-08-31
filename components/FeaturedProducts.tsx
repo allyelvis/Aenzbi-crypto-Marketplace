@@ -1,4 +1,3 @@
-
 import React from 'react';
 import type { Product } from '../types';
 import ProductCard from './ProductCard';
@@ -80,9 +79,10 @@ const mockProducts: Product[] = [
 
 interface FeaturedProductsProps {
   searchQuery: string;
+  onAddToCart: (product: Product) => void;
 }
 
-const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ searchQuery }) => {
+const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ searchQuery, onAddToCart }) => {
   const filteredProducts = mockProducts.filter(product =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -101,7 +101,7 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ searchQuery }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
+              <ProductCard key={product.id} product={product} onAddToCart={() => onAddToCart(product)} />
             ))
           ) : (
             <div className="col-span-full text-center text-gray-400 text-lg py-16">

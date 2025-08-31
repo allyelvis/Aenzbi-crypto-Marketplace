@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { SearchIcon, WalletIcon, MenuIcon, XIcon } from './icons';
+import { SearchIcon, WalletIcon, MenuIcon, XIcon, CartIcon } from './icons';
 
 const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
   <a href={href} className="text-gray-300 hover:text-white transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">
@@ -11,9 +10,11 @@ const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, 
 interface HeaderProps {
   searchQuery: string;
   onSearchChange: (query: string) => void;
+  cartItemCount: number;
+  onCartClick: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
+const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange, cartItemCount, onCartClick }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -44,12 +45,28 @@ const Header: React.FC<HeaderProps> = ({ searchQuery, onSearchChange }) => {
                 <SearchIcon className="h-5 w-5 text-gray-400" />
               </div>
             </div>
+             <button onClick={onCartClick} className="relative text-gray-300 hover:text-white p-2">
+              <CartIcon className="h-6 w-6" />
+              {cartItemCount > 0 && (
+                <span className="absolute top-0 right-0 block h-4 w-4 rounded-full bg-brand-accent text-white text-xs font-semibold transform translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </button>
             <button className="flex items-center bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-semibold py-2 px-4 rounded-full hover:scale-105 transform transition-transform duration-300 shadow-md">
               <WalletIcon className="h-5 w-5 mr-2" />
               Connect Wallet
             </button>
           </div>
           <div className="md:hidden flex items-center">
+             <button onClick={onCartClick} className="relative text-gray-300 hover:text-white p-2 mr-2">
+              <CartIcon className="h-6 w-6" />
+              {cartItemCount > 0 && (
+                <span className="absolute top-0 right-0 block h-4 w-4 rounded-full bg-brand-accent text-white text-xs font-semibold transform translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
+            </button>
             <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="text-gray-300 hover:text-white">
               {isMenuOpen ? <XIcon className="h-6 w-6" /> : <MenuIcon className="h-6 w-6" />}
             </button>

@@ -1,4 +1,3 @@
-
 import type React from 'react';
 
 export const SearchIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
@@ -67,4 +66,29 @@ export const DiscordIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     <svg fill="currentColor" viewBox="0 0 24 24" {...props}>
         <path d="M19.54 0c1.356 0 2.46 1.104 2.46 2.472v21.528l-2.58-2.28-1.452-1.344-1.536-1.428.636 2.22h-3.408a2.472 2.472 0 0 1-2.472-2.472V2.472C8.76 1.104 9.864 0 11.22 0h8.32zM8.22 3.516c-1.356 0-2.46 1.104-2.46 2.472v13.008c0 1.368 1.104 2.472 2.46 2.472H18.18v-2.808H8.22V3.516z" />
     </svg>
+);
+
+export const CartIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c.51 0 .962-.343 1.087-.835l1.828-6.491A1.125 1.125 0 0018.332 6H6.188c-.475 0-.91.34-.985.816l-.546 2.724m6.362 5.176a3 3 0 01-3-3H6.188" />
+    </svg>
+);
+
+export const TrashIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.144-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.057-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+  </svg>
+);
+
+export const CopyIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" {...props}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.666 3.888A2.25 2.25 0 0013.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v3.042m-7.332 0c-.055.194-.084.4-.084.612v3.042m0 0a2.25 2.25 0 002.25 2.25h3a2.25 2.25 0 002.25-2.25V6.75m-7.5 0V6.75a2.25 2.25 0 012.25-2.25h3c1.03 0 1.9.693 2.166 1.638m-7.332 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 12.75h.008v.008H12v-.008z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 15.75h.008v.008H12v-.008z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 15.75h.008v.008H9.75v-.008z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 12.75h.008v.008H9.75v-.008z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 12.75h.008v.008H14.25v-.008z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 15.75h.008v.008H14.25v-.008z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75h.008v.008H12v-.008z" />
+  </svg>
 );

@@ -1,4 +1,3 @@
-
 import type React from 'react';
 
 export interface Product {
@@ -9,6 +8,11 @@ export interface Product {
   priceETH: number;
   imageUrl: string;
   category: string;
+}
+
+export interface CartItem {
+  product: Product;
+  quantity: number;
 }
 
 export interface Pillar {
