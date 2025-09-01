@@ -1,4 +1,3 @@
-
 import React from 'react';
 import type { Pillar } from '../types';
 import { StoreIcon, BlockchainIcon, PosIcon } from './icons';
@@ -34,9 +33,9 @@ const PillarCard: React.FC<{ pillar: Pillar }> = ({ pillar }) => {
   );
 };
 
-const Pillars: React.FC = () => {
+const Pillars = React.forwardRef<HTMLElement>((props, ref) => {
   return (
-    <section className="py-20 sm:py-24 bg-dark-main">
+    <section ref={ref} className="py-20 sm:py-24 bg-dark-main">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter text-white">
@@ -54,6 +53,6 @@ const Pillars: React.FC = () => {
       </div>
     </section>
   );
-};
+});
 
 export default Pillars;

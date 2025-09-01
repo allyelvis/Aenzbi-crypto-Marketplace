@@ -1,11 +1,10 @@
-
 import React from 'react';
 import { TwitterIcon, InstagramIcon, DiscordIcon } from './icons';
 
-const FooterLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-    <a href={href} className="text-gray-400 hover:text-white transition-colors duration-200">
-      {children}
-    </a>
+const FooterLink: React.FC<{ onClick?: () => void; href?: string; children: React.ReactNode }> = ({ onClick, href, children }) => (
+  <button onClick={onClick} data-href={href} className="text-gray-400 hover:text-white transition-colors duration-200 text-left">
+    {children}
+  </button>
 );
 
 const SocialIcon: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
@@ -14,7 +13,12 @@ const SocialIcon: React.FC<{ href: string; children: React.ReactNode }> = ({ hre
     </a>
 );
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  onExploreClick: () => void;
+  onConnectClick: () => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onExploreClick, onConnectClick }) => {
   return (
     <footer className="bg-dark-secondary border-t border-gray-800">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -29,8 +33,8 @@ const Footer: React.FC = () => {
           </div>
           <div>
             <h4 className="font-semibold text-white tracking-wider uppercase">Marketplace</h4>
-            <div className="mt-4 space-y-3">
-              <FooterLink href="#">Explore</FooterLink>
+            <div className="mt-4 space-y-3 flex flex-col items-start">
+              <FooterLink onClick={onExploreClick}>Explore</FooterLink>
               <FooterLink href="#">Categories</FooterLink>
               <FooterLink href="#">How to Sell</FooterLink>
               <FooterLink href="#">Our Fees</FooterLink>
@@ -38,8 +42,8 @@ const Footer: React.FC = () => {
           </div>
           <div>
             <h4 className="font-semibold text-white tracking-wider uppercase">Crypto</h4>
-            <div className="mt-4 space-y-3">
-              <FooterLink href="#">Connect Wallet</FooterLink>
+            <div className="mt-4 space-y-3 flex flex-col items-start">
+              <FooterLink onClick={onConnectClick}>Connect Wallet</FooterLink>
               <FooterLink href="#">Supported Chains</FooterLink>
               <FooterLink href="#">Tokenomics</FooterLink>
               <FooterLink href="#">NFTs</FooterLink>
@@ -47,7 +51,7 @@ const Footer: React.FC = () => {
           </div>
           <div>
             <h4 className="font-semibold text-white tracking-wider uppercase">Company</h4>
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 space-y-3 flex flex-col items-start">
               <FooterLink href="#">About Us</FooterLink>
               <FooterLink href="#">Careers</FooterLink>
               <FooterLink href="#">Press</FooterLink>
@@ -56,7 +60,7 @@ const Footer: React.FC = () => {
           </div>
            <div>
             <h4 className="font-semibold text-white tracking-wider uppercase">Legal</h4>
-            <div className="mt-4 space-y-3">
+            <div className="mt-4 space-y-3 flex flex-col items-start">
               <FooterLink href="#">Terms of Service</FooterLink>
               <FooterLink href="#">Privacy Policy</FooterLink>
             </div>

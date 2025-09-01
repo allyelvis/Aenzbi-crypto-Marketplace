@@ -1,11 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Pillars from './components/Pillars';
 import FeaturedProducts from './components/FeaturedProducts';
+import POS from './components/POS';
 import Footer from './components/Footer';
 import CartModal from './components/CartModal';
 import ConnectWalletModal from './components/ConnectWalletModal';
+import BecomeSellerModal from './components/BecomeSellerModal';
 import type { Product, CartItem } from './types';
 
 const App: React.FC = () => {
@@ -15,6 +17,15 @@ const App: React.FC = () => {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
   const [walletBalance, setWalletBalance] = useState<string | null>(null);
   const [isWalletModalOpen, setIsWalletModalOpen] = useState(false);
+  const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
+
+  const marketplaceRef = useRef<HTMLElement>(null);
+  const pillarsRef = useRef<HTMLElement>(null);
+  const posRef = useRef<HTMLElement>(null);
+
+  const handleScrollTo = (ref: React.RefObject<HTMLElement>) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
@@ -71,6 +82,11 @@ const App: React.FC = () => {
     setWalletBalance(null);
   };
 
+  const sectionRefs = {
+    marketplace: marketplaceRef,
+    pillars: pillarsRef,
+    pos: posRef
+  };
 
   return (
     <div className="min-h-screen bg-dark-main text-gray-100 font-sans">
@@ -83,16 +99,26 @@ const App: React.FC = () => {
         walletBalance={walletBalance}
         onConnectClick={() => setIsWalletModalOpen(true)}
         onDisconnectClick={handleDisconnectWallet}
+        onScrollTo={handleScrollTo}
+        sectionRefs={sectionRefs}
       />
       <main>
-        <Hero />
-        <Pillars />
+        <Hero 
+          onExploreClick={() => handleScrollTo(marketplaceRef)}
+          onSellerClick={() => setIsSellerModalOpen(true)}
+        />
+        <Pillars ref={pillarsRef} />
         <FeaturedProducts 
+          ref={marketplaceRef}
           searchQuery={searchQuery}
           onAddToCart={handleAddToCart} 
         />
+        <POS ref={posRef} />
       </main>
-      <Footer />
+      <Footer 
+        onExploreClick={() => handleScrollTo(marketplaceRef)}
+        onConnectClick={() => setIsWalletModalOpen(true)}
+      />
       <CartModal 
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
@@ -104,6 +130,10 @@ const App: React.FC = () => {
         isOpen={isWalletModalOpen}
         onClose={() => setIsWalletModalOpen(false)}
         onConnect={handleConnectWallet}
+      />
+      <BecomeSellerModal
+        isOpen={isSellerModalOpen}
+        onClose={() => setIsSellerModalOpen(false)}
       />
     </div>
   );

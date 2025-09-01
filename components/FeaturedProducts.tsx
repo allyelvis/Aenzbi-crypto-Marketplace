@@ -82,13 +82,13 @@ interface FeaturedProductsProps {
   onAddToCart: (product: Product) => void;
 }
 
-const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ searchQuery, onAddToCart }) => {
+const FeaturedProducts = React.forwardRef<HTMLElement, FeaturedProductsProps>(({ searchQuery, onAddToCart }, ref) => {
   const filteredProducts = mockProducts.filter(product =>
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <section className="py-20 sm:py-24 bg-dark-secondary">
+    <section ref={ref} className="py-20 sm:py-24 bg-dark-secondary">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tighter text-white">
@@ -113,6 +113,6 @@ const FeaturedProducts: React.FC<FeaturedProductsProps> = ({ searchQuery, onAddT
       </div>
     </section>
   );
-};
+});
 
 export default FeaturedProducts;

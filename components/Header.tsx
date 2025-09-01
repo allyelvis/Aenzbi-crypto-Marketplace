@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import { SearchIcon, WalletIcon, MenuIcon, XIcon, CartIcon, ChevronDownIcon, EthIcon } from './icons';
 
-const NavLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-  <a href={href} className="text-gray-300 hover:text-white transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">
+interface NavLinkProps {
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+const NavLink: React.FC<NavLinkProps> = ({ onClick, children }) => (
+  <button onClick={onClick} className="text-gray-300 hover:text-white transition-colors duration-300 px-3 py-2 rounded-md text-sm font-medium">
     {children}
-  </a>
+  </button>
 );
 
 interface HeaderProps {
@@ -16,6 +21,12 @@ interface HeaderProps {
   walletBalance: string | null;
   onConnectClick: () => void;
   onDisconnectClick: () => void;
+  onScrollTo: (ref: React.RefObject<HTMLElement>) => void;
+  sectionRefs: {
+    marketplace: React.RefObject<HTMLElement>;
+    pillars: React.RefObject<HTMLElement>;
+    pos: React.RefObject<HTMLElement>;
+  }
 }
 
 const Header: React.FC<HeaderProps> = ({ 
@@ -26,13 +37,19 @@ const Header: React.FC<HeaderProps> = ({
   walletAddress,
   walletBalance,
   onConnectClick,
-  onDisconnectClick
+  onDisconnectClick,
+  onScrollTo,
+  sectionRefs
 }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const shortenAddress = (address: string) => {
     return `${address.substring(0, 6)}...${address.substring(address.length - 4)}`;
   }
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const WalletButton: React.FC<{ isMobile?: boolean }> = ({ isMobile = false }) => {
     if (walletAddress) {
@@ -49,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({
             <span className="font-mono text-sm">{shortenAddress(walletAddress)}</span>
             <ChevronDownIcon className="h-4 w-4 ml-2 group-hover:rotate-180 transition-transform"/>
           </button>
-          <div className="absolute top-full right-0 mt-2 w-48 bg-dark-secondary rounded-md shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto">
+          <div className="absolute top-full right-0 mt-2 w-48 bg-dark-secondary rounded-md shadow-lg py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none group-hover:pointer-events-auto z-10">
             <button 
               onClick={onDisconnectClick}
               className="block w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-dark-card hover:text-brand-accent"
@@ -76,15 +93,15 @@ const Header: React.FC<HeaderProps> = ({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           <div className="flex-shrink-0">
-            <a href="#" className="text-2xl font-bold tracking-tighter text-white">
+            <button onClick={handleScrollToTop} className="text-2xl font-bold tracking-tighter text-white">
               aenzbi<span className="text-brand-primary">.</span>
-            </a>
+            </button>
           </div>
           <div className="hidden md:flex md:items-center md:space-x-4">
-            <NavLink href="#">Marketplace</NavLink>
-            <NavLink href="#">NFTs</NavLink>
-            <NavLink href="#">Crypto</NavLink>
-            <NavLink href="#">POS</NavLink>
+            <NavLink onClick={() => onScrollTo(sectionRefs.marketplace)}>Marketplace</NavLink>
+            <NavLink onClick={() => onScrollTo(sectionRefs.marketplace)}>NFTs</NavLink>
+            <NavLink onClick={() => onScrollTo(sectionRefs.pillars)}>Crypto</NavLink>
+            <NavLink onClick={() => onScrollTo(sectionRefs.pos)}>POS</NavLink>
           </div>
           <div className="hidden md:flex items-center space-x-4">
             <div className="relative">
@@ -126,10 +143,10 @@ const Header: React.FC<HeaderProps> = ({
       </div>
       {isMenuOpen && (
         <div className="md:hidden px-2 pt-2 pb-3 space-y-1 sm:px-3">
-          <NavLink href="#">Marketplace</NavLink>
-          <NavLink href="#">NFTs</NavLink>
-          <NavLink href="#">Crypto</NavLink>
-          <NavLink href="#">POS</NavLink>
+          <NavLink onClick={() => {onScrollTo(sectionRefs.marketplace); setIsMenuOpen(false);}}>Marketplace</NavLink>
+          <NavLink onClick={() => {onScrollTo(sectionRefs.marketplace); setIsMenuOpen(false);}}>NFTs</NavLink>
+          <NavLink onClick={() => {onScrollTo(sectionRefs.pillars); setIsMenuOpen(false);}}>Crypto</NavLink>
+          <NavLink onClick={() => {onScrollTo(sectionRefs.pos); setIsMenuOpen(false);}}>POS</NavLink>
            <div className="pt-4 pb-2">
             <WalletButton isMobile />
           </div>

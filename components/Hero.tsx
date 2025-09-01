@@ -1,7 +1,11 @@
-
 import React from 'react';
 
-const Hero: React.FC = () => {
+interface HeroProps {
+  onExploreClick: () => void;
+  onSellerClick: () => void;
+}
+
+const Hero: React.FC<HeroProps> = ({ onExploreClick, onSellerClick }) => {
   return (
     <section className="relative overflow-hidden bg-dark-secondary py-20 sm:py-32">
        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
@@ -21,18 +25,18 @@ const Hero: React.FC = () => {
           aenzbi is your all-in-one platform for e-commerce, crypto payments, and global POS. Sell anything, anywhere, to anyone.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#"
+          <button
+            onClick={onExploreClick}
             className="w-full sm:w-auto bg-gradient-to-r from-brand-primary to-brand-secondary text-white font-semibold py-3 px-8 rounded-full hover:scale-105 transform transition-all duration-300 shadow-lg"
           >
             Explore Marketplace
-          </a>
-          <a
-            href="#"
+          </button>
+          <button
+            onClick={onSellerClick}
             className="w-full sm:w-auto bg-dark-card text-white font-semibold py-3 px-8 rounded-full hover:bg-gray-700/80 transform transition-all duration-300 border border-gray-600"
           >
             Become a Seller
-          </a>
+          </button>
         </div>
       </div>
     </section>
